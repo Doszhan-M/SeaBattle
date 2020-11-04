@@ -1,20 +1,24 @@
 class Board:
-    w = '     1   2   3   4   5   6'
-    a = [' a ', '|1|', '|2|', '|3|', '|O|', '|O|', '|6|']
-    b = ' b |O| |O| |O| |O| |O| |O|'
-    c = ' c |O| |O| |O| |O| |O| |O|'
-    d = ' d |O| |O| |O| |O| |O| |O|'
-    e = ' e |O| |O| |O| |O| |O| |O|'
-    f = ' f |O| |O| |O| |O| |O| |O|'
-
+    # Игровая доска
+    w = ['    ', ' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ']
+    a = [' a ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    b = [' b ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    c = [' c ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    d = [' d ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    e = [' e ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    f = [' f ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
+    # Вспомогательные переменные для функции интерактива с игроком
     list1 = [a, b, c, d, e, f]
     number = 0
 
+    # Функция печати доски
     def print_board(self):
-        print(self.w, '\n', self.a, '\n', self.b, '\n', self.c, '\n', self.d, '\n', self.e, '\n', self.f)
+        print(*self.w, '\n', *self.a, '\n', *self.b, '\n', *self.c, '\n', *self.d, '\n', *self.e, '\n', *self.f, '\n', '_' * 30)
 
+    # Функция ввода координат клетки на доске
     def player_choice(self):
-        input1 = 'a3'
+        self.print_board()
+        input1 = 'a4'# input('mumber ship: ')
         # input_pattern = 'self.$[@]'
         # input_pattern = input_pattern.replace('$', input1[0])
         # input_pattern = input_pattern.replace('@', input1[1])
@@ -23,20 +27,21 @@ class Board:
         self.number = int(input1[1])
         return input_pattern
 
-    def player_ship_place(self):
-        self.player_choice()
+    # Функция отрисовки кораблей игрока
+    def player_ship_place(self, ship_class):
+       # self.player_choice()
         index = self.list1.index(eval(self.player_choice()))
         print(index)
-        print(self.list1[0][self.number])
-        self.list1[0][self.number] = '!'
-        print(self.a)
+        self.list1[index][self.number] = ship_class
 
 
 class Ship:
     little_ship = '|#|'
+    medium_ship = '|#|'
 
 
 ship = Ship()
 gamer = Board()
 
-gamer.player_ship_place()
+gamer.player_ship_place(ship.little_ship)
+gamer.print_board()
