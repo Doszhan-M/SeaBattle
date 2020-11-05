@@ -1,21 +1,27 @@
-class GameLogic:
-    computer_step_list = set()  # Переменная для сбора сделанных ходов компьютера
-    player_step_list = set()  # Переменная для сбора сделанных ходов игрока
-    block_list = set()  # Переменная для сбора всех сделанных ходов
-    allow_list = set()  # Переменная где храняться доступные ходы
+# импорт классов
+from Ship import *
 
-    # Вспомогательные переменные конструктора доступных ходов
-    list2 = ('a', 'b', 'c', 'd', 'e', 'f')
-    list3 = ('1', '2', '3', '4', '5', '6')
-    list_all_step = set()  # Переменная где храняться возможные ходы
 
-    # Создаем множество всех доступных вариантов
-    def __init__(self):
-        for i in self.list2:
-            for y in self.list3:
-                self.list_all_step.add(i + y)
+class PlayerShipsPlace(PlayerShips):
+    count = 0
 
-    # В список сделанных ходов вносим ходы игрока и компьютера
-    block_list.union(computer_step_list, player_step_list)
-    # Из списка всех ходов убираем сделанные ходы и вносим их в доступные ходы
-    allow_list.union(list_all_step.symmetric_difference(block_list))
+    def StartPlayerShips(self):
+        while self.count < 3:
+            self.player_little_ship_place(self.little_ship, self.player_choice())
+            self.count += 1
+            print(f'Корабль №{self.count} легкого класса расположен ')
+            print('Block list', self.block_list)
+            if self.count == 1:
+                self.count = 0
+                while self.count < 3:
+                    self.player_medium_ship_place(self.medium_ship, self.player_choice())
+                    self.count += 1
+                    print(f'Корабль №{self.count} среднего класса расположен ')
+                    print('Block list', self.block_list)
+                    if self.count == 1:
+                        self.count = 0
+                        while self.count < 1:
+                            self.player_large_ship_place(self.large_ship, self.player_choice())
+                            self.count = 5
+                            print(f'Корабль №{self.count} высшего класса расположен ')
+                            print('Block list', self.block_list)
