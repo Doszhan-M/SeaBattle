@@ -1,1 +1,7 @@
-.idea 
+﻿.idea 
+������.txt
+1.py
+2.py
+3.py
+*.txt
+__pycache__
