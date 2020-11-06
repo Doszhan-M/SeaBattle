@@ -1,12 +1,28 @@
+# импорт библиотек
+import random
+
 # импорт классов
 from Board import *
 
 
-class Player(Board):
+class Gamer(Board):
 
     # Функция ввода координат для игрока для расстановки кораблей
     def player_choice(self):
         input1 = input('Укажите на какое место установить корабль: ')
+        final_value = self.choice_constructor(input1)
+        return final_value  # возвращает кортеж типа (self.a, 1)
+
+    # Функция ввода координат для компьютера
+    def computer_choice(self):
+        list_all_step = list(self.list_all_step)
+        input1 = random.choice(list_all_step)
+        print(input1)
+        final_value = self.choice_constructor(input1)
+        self.print_board()
+        return final_value  # возвращает кортеж типа (self.a, 1)
+
+    def choice_constructor(self, input1):
         # Проверка есть ли выбор игрока в возможных вариантах
         if input1 in self.list_all_step:
             # Проверка есть ли выбор игрока в блок листе
@@ -47,8 +63,5 @@ class Player(Board):
                 print('Вы не можете выбрать уже занятые квадраты! Выберите другую')
                 return self.player_choice()
         else:
-            print('Введите клетку из доступных на игровой доскке! Например, a1 или c3')
+            print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
             return self.player_choice()
-
-# Функция ввода координат для компьютера
-# def computer_choice(self):

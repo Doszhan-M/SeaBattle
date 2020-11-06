@@ -12,9 +12,6 @@ class Board(GameCondition):
     e = [' e ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
     f = [' f ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
 
-
-
-
     # Вспомогательные переменные для функции интерактива с игроком
     board_list = [a, b, c, d, e, f]
 
@@ -25,7 +22,6 @@ class Board(GameCondition):
 
     # Функция для определения минимальной дистанции между кораблями на игровой доске
     def min_distance(self):
-        print('player_step_list', self.player_step_list)
         for i in self.player_step_list:  # a1
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) + 1)))
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) - 1)))
@@ -36,6 +32,4 @@ class Board(GameCondition):
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[abs(self.list2.index(y) - 1)]))
                     except IndexError:
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[abs(self.list2.index(y) - 1)]))
-        print('one_cell_work_list',self.one_cell_work_list)
         return self.one_cell_work_list
-
