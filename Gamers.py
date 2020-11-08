@@ -5,18 +5,18 @@ from Board import *
 
 
 class Gamer(Board):
-
     # Функция ввода координат для игрока для расстановки кораблей
     def player_choice(self):
+        # Ставим соответсвующее значение флага, чтобы программа знала чей ход
         input1 = input('Укажите на какое место установить корабль: ')
         final_value1 = self.choice_constructor(input1, self.player_choice)
         return final_value1  # возвращает кортеж типа (self.a, 1)
 
     # Функция ввода координат для компьютера
     def computer_choice(self):
-        list_all_step = list(self.list_all_step)
-        input1 = random.choice(list_all_step)
-        print('input1', input1)
+        # Ставим соответсвующее значение флага, чтобы программа знала чей ход
+        list_computer_step = list(self.list_all_step.difference(self.block_list))
+        input1 = random.choice(list_computer_step)
         final_value = self.choice_constructor(input1, self.computer_choice)
         return final_value  # возвращает кортеж типа (self.a, 1)
 

@@ -17,36 +17,32 @@ class PlayerShips(Gamer):
         self.board_list[index][input_pattern[1]] = ship_class
         # Создаем кортеж для вычиления след клетки для кораблей классом выше
         temp_value = (index, input_pattern[1])
-        if self.passage == 0:
-            self.print_board()
+        self.print_board()
         return temp_value  # возвращает кортеж типа (0, 1)
 
     # Функция для отрисовки кораблей игрока среднего класса. На вход принимает класс корабля, метод ввода координат
     # игроком класса Gamer.
-    def player_medium_ship_place(self, ship_class, input_pattern):
+    def player_medium_ship_place(self, ship_class, input_pattern, port):
         self.player_little_ship_place(ship_class, input_pattern)
         # Присваиваем координаты первой клетки переменной для вычисления вариантов следующего
         temp_value1 = self.player_little_ship_place(ship_class, input_pattern)
         self.access_cell_board = set()
-        self.passage = 1
         # Формируем доступные клетки
-        self.constructor_access_cell(temp_value1, ship_class)
-        # temp_value2 = self.player_little_ship_place(ship_class, input_pattern)
-        self.passage = 0
-        return  # temp_value2
-
-    # Функция для отрисовки кораблей игрока высшего классаНа вход принимает класс корабля, метод ввода координат
-    #     # игроком класса Gamer.
-    def player_large_ship_place(self, ship_class, input_pattern):
-        # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
-        temp_value4 = self.player_medium_ship_place(ship_class, input_pattern)
-        self.constructor_access_cell(temp_value4)
-        temp_value5 = self.player_little_ship_place(ship_class, input_pattern)
+        temp_value_medium = self.constructor_access_cell(temp_value1, ship_class, port)
         self.flag = 0
-        return temp_value5
+        return temp_value_medium
+
+    # Функция для отрисовки кораблей игрока высшего класса. На вход принимает класс корабля, метод ввода координат
+    # игроком класса Gamer.
+    def player_large_ship_place(self, ship_class, input_pattern, port):
+        # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
+        temp_value2 = self.player_medium_ship_place(ship_class, input_pattern, port)
+        temp_value_large = self.constructor_access_cell(temp_value2, ship_class, port)
+        self.flag = 0
+        return temp_value_large
 
     # Функция для формирования доступных ходов
-    def constructor_access_cell(self, temp_value1, ship_class):
+    def constructor_access_cell(self, temp_value1, ship_class, port):
         try:  # В списке может возникнуть исключение, если игрок выбрал клетку на краю доски
             # Создаем список с соседними клетками
             access_cell = [self.list2[temp_value1[0] + 1] + str(temp_value1[1]),
@@ -72,5 +68,8 @@ class PlayerShips(Gamer):
               f'Доступные варианты:  {self.access_cell_board}')
         # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками
         self.flag = 1
-        self.player_little_ship_place(ship_class, self.player_choice())
-        return
+        if port == 'player':
+            temp_value_medium = self.player_little_ship_place(ship_class, self.player_choice())
+        else:
+            temp_value_medium = self.player_little_ship_place(ship_class, self.computer_choice())
+        return temp_value_medium
