@@ -8,8 +8,7 @@ from Board import *
 class Gamer(Board):
     # Функция ввода координат для игрока для расстановки кораблей
     def player_choice(self):
-        # Ставим соответсвующее значение флага, чтобы программа знала чей ход
-        input1 = input('Укажите на какое место установить корабль: ')
+        input1 = input('Укажите координаты клетки для расположения корабля: ')
         final_value1 = self.choice_constructor(input1, self.player_choice)
         return final_value1  # возвращает кортеж типа (self.a, 1)
 
@@ -53,12 +52,33 @@ class Gamer(Board):
     # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
     def choice_const(self, input1):
         # Добавляем выбор игрока в список его ходов
-        self.player_step_list.add(input1)
+        self.step_list.add(input1)
+        print('self.step_list-', self.step_list)
         # Вносим координату в блок лист
-        self.block_list = self.block_list.union(self.player_step_list)
+        self.block_list = self.block_list.union(self.step_list)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
         input_pattern = 'gamer_board.@'
         input_pattern = input_pattern.replace('@', input1[0])
         number = int(input1[1])
         final_value = (input_pattern, number)
         return final_value  # возвращает кортеж типа (self.a, 1)
+
+    def player_shoot(self, enemy_board):
+        input2 = input('Укажите координаты на доске противника: ')
+        print('input2', input2)
+        print('enemy_board.step_list-', enemy_board.step_list)
+        if input2 in enemy_board.step_list:
+            if input2 not in self.shoot_list:
+                self.shoot_list.add(input2)
+                input_pattern = 'enemy_board.@'
+                input_pattern = input_pattern.replace('@', input2[0])
+                number = int(input2[1])
+                final_value = (input_pattern, number)
+                print('final_value', final_value)
+                return final_value  # возвращает кортеж типа (self.a, 1)
+
+
+
+
+
+
