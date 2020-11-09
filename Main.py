@@ -17,4 +17,6 @@ computer_board = Board()
 # Начинаем игру
 player.arrange_ships(player_choice.player_choice, player_board, gamer_player)
 computer.arrange_ships(computer_choice.computer_choice, computer_board, gamer_computer)
-player.fire(player_choice.player_shoot, computer_board)
+# Соперники окрывают огонь друг другу
+while True:
+    player.fire(player_choice.player_shoot, player_board, computer_board)
