@@ -1,5 +1,6 @@
 # импорт библиотек
 import random
+
 # импорт классов
 from Board import *
 
@@ -50,14 +51,14 @@ class Gamer(Board):
             return computer_or_player_choice()
 
     # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
-    def choice_const(self, input):
+    def choice_const(self, input1):
         # Добавляем выбор игрока в список его ходов
-        self.player_step_list.add(input)
+        self.player_step_list.add(input1)
         # Вносим координату в блок лист
         self.block_list = self.block_list.union(self.player_step_list)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
-        input_pattern = 'self.@'
-        input_pattern = input_pattern.replace('@', input[0])
-        number = int(input[1])
+        input_pattern = 'gamer_board.@'
+        input_pattern = input_pattern.replace('@', input1[0])
+        number = int(input1[1])
         final_value = (input_pattern, number)
         return final_value  # возвращает кортеж типа (self.a, 1)
