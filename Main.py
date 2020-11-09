@@ -1,12 +1,12 @@
 # импорт классов
-from Board import *
 from GameLogic import *
 
+# Объявляем переменные для определение чей ход
 gamer_computer = 'computer'
 gamer_player = 'player'
-
-start_player = ShipsLocation()
-start_computer = ShipsLocation()
+# Объявляем классы
+player = GameBehavior()
+computer = GameBehavior()
 
 player_choice = Gamer()
 computer_choice = Gamer()
@@ -14,5 +14,7 @@ computer_choice = Gamer()
 player_board = Board()
 computer_board = Board()
 
-start_computer.arrange_ships(computer_choice.computer_choice, computer_board, gamer_computer)
-start_player.arrange_ships(player_choice.player_choice, player_board, gamer_player)
+# Начинаем игру
+player.arrange_ships(player_choice.player_choice, player_board, gamer_player)
+computer.arrange_ships(computer_choice.computer_choice, computer_board, gamer_computer)
+player.fire(player_choice.player_shoot, computer_board)

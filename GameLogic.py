@@ -2,25 +2,32 @@
 from Ship import *
 
 
-class ShipsLocation(PlayerShips):
+class GameBehavior(Ships):
     count_ships = 0  # Флаг для подсчета установленных кораблей
 
-    def arrange_ships(self, gamer_choice, gamer_board, port):
+    def arrange_ships(self, gamer_choice, gamer_board, gamer):
         gamer_board.print_board()
         while self.count_ships < 1:
-            self.player_little_ship_place(self.little_ship, gamer_choice(), gamer_board)
+            self.ship_place_fire_ship(self.little_ship, gamer_choice(), gamer_board)
             self.count_ships += 1
             print(f'Корабль №{self.count_ships} легкого класса расположен ')
             if self.count_ships == 1:
                 self.count_ships = 0
                 while self.count_ships < 1:
-                    self.player_medium_ship_place(self.medium_ship, gamer_choice(), gamer_board, port)
+                    self.medium_ship_place(self.medium_ship, gamer_choice(), gamer_board, gamer)
                     self.count_ships += 1
                     print(f'Корабль №{self.count_ships} среднего класса расположен ')
                     if self.count_ships == 10:
                         self.count_ships = 0
                         while self.count_ships < 1:
-                            self.player_large_ship_place(self.large_ship, gamer_choice(), gamer_board, port)
+                            self.large_ship_place(self.large_ship, gamer_choice(), gamer_board, gamer)
                             self.count_ships = 11
                             print(f'Корабль высшего класса расположен ')
                             return
+
+    # Функция для выстрела по доске противника
+    def fire(self, gamer_choice, enemy_board):  # на вход принимает функцию ввода координит,
+        print('Сделайте выстрел по доске противника!')
+        print(enemy_board.print_board())
+        self.ship_place_fire_ship(self.burning_ship, gamer_choice(enemy_board), enemy_board)
+

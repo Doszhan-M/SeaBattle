@@ -14,14 +14,17 @@ class Board:
         self.f = [' f ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
         self.board_list = [self.a, self.b, self.c, self.d, self.e, self.f]
         # Вспомогательные переменные для функции интерактива с игроком
+        self.list_all_step = set()  # Переменная где храняться все ходы
         self.computer_step_list = set()  # Переменная для сбора сделанных ходов компьютера
-        self.player_step_list = set()  # Переменная для сбора сделанных ходов игрока
+        self.step_list = set()  # Переменная для сбора сделанных ходов игрока
         self.block_list = set()  # Переменная для сбора всех сделанных ходов обоих игроков
         self.one_cell_work_list = set()  # Переменная для вычисления минимального расстояния между кораблями
         self.access_cell_board = set()  # Переменная для хранения вариантов хода крупных кораблей
         self.allow_list = set()  # Переменная где храняться доступные ходы
-        self.list_all_step = set()  # Переменная где храняться все ходы
-        # Вспомогательные переменные для конструктора
+        # Переменные для выстрела
+        self.shoot_list = set()
+
+        # Переменные для конструктора
         self.list2 = ('a', 'b', 'c', 'd', 'e', 'f')
         self.list3 = ('1', '2', '3', '4', '5', '6')
         self.flag = 0  # Флаг для ограничения растояния кораблей
@@ -38,7 +41,7 @@ class Board:
 
     # Функция для определения минимальной дистанции между кораблями на игровой доске
     def min_distance(self):
-        for i in self.player_step_list:  # a1
+        for i in self.step_list:  # a1
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) + 1)))
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) - 1)))
             for y in self.list2:
