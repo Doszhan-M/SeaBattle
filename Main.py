@@ -1,32 +1,18 @@
-# импорт библтеотек
 # импорт классов
 from Board import *
-from Ship import *
+from GameLogic import *
 
-ship = Ship()
-gamer_board = Board()
-player = Player()
+gamer_computer = 'computer'
+gamer_player = 'player'
 
-count = 0
-print(GameLogic.allow_list)
-gamer_board.print_board()
+start_player = ShipsLocation()
+start_computer = ShipsLocation()
 
-while count < 2:
-    gamer_board.player_little_ship_place(ship.ship, player.player_choice(player.list_all_step))
-    count += 1
-    print(f'Корабль №{count} легкого класса расположен ')
-    print('Block list', gamer_board.block_list)
-    if count == 1:
-        count = 0
-        while count < 2:
-            gamer_board.player_medium_ship_place(ship.ship, player.player_choice(gamer_board.list_all_step))
-            count += 1
-            print(f'Корабль №{count} среднего класса расположен ')
-            print('Block list', gamer_board.block_list)
-            if count == 1:
-                count = 0
-                while count < 1:
-                    gamer_board.player_large_ship_place(ship.ship, player.player_choice(gamer_board.list_all_step))
-                    count = 5
-                    print(f'Корабль №{count} высшего класса расположен ')
-                    print('Block list', gamer_board.block_list)
+player_choice = Gamer()
+computer_choice = Gamer()
+
+player_board = Board()
+computer_board = Board()
+
+start_computer.arrange_ships(computer_choice.computer_choice, computer_board, gamer_computer)
+start_player.arrange_ships(player_choice.player_choice, player_board, gamer_player)

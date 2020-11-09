@@ -1,21 +1,26 @@
-class GameLogic:
-    computer_step_list = set()  # Переменная для сбора сделанных ходов компьютера
-    player_step_list = set()  # Переменная для сбора сделанных ходов игрока
-    block_list = set()  # Переменная для сбора всех сделанных ходов
-    allow_list = set()  # Переменная где храняться доступные ходы
+# импорт классов
+from Ship import *
 
-    # Вспомогательные переменные конструктора доступных ходов
-    list2 = ('a', 'b', 'c', 'd', 'e', 'f')
-    list3 = ('1', '2', '3', '4', '5', '6')
-    list_all_step = set()  # Переменная где храняться возможные ходы
 
-    # Создаем множество всех доступных вариантов
-    def __init__(self):
-        for i in self.list2:
-            for y in self.list3:
-                self.list_all_step.add(i + y)
+class ShipsLocation(PlayerShips):
+    count_ships = 0  # Флаг для подсчета установленных кораблей
 
-    # В список сделанных ходов вносим ходы игрока и компьютера
-    block_list.union(computer_step_list, player_step_list)
-    # Из списка всех ходов убираем сделанные ходы и вносим их в доступные ходы
-    allow_list.union(list_all_step.symmetric_difference(block_list))
+    def arrange_ships(self, gamer_choice, gamer_board, port):
+        gamer_board.print_board()
+        while self.count_ships < 1:
+            self.player_little_ship_place(self.little_ship, gamer_choice(), gamer_board)
+            self.count_ships += 1
+            print(f'Корабль №{self.count_ships} легкого класса расположен ')
+            if self.count_ships == 1:
+                self.count_ships = 0
+                while self.count_ships < 1:
+                    self.player_medium_ship_place(self.medium_ship, gamer_choice(), gamer_board, port)
+                    self.count_ships += 1
+                    print(f'Корабль №{self.count_ships} среднего класса расположен ')
+                    if self.count_ships == 10:
+                        self.count_ships = 0
+                        while self.count_ships < 1:
+                            self.player_large_ship_place(self.large_ship, gamer_choice(), gamer_board, port)
+                            self.count_ships = 11
+                            print(f'Корабль высшего класса расположен ')
+                            return
