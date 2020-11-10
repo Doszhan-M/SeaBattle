@@ -26,8 +26,8 @@ class GameBehavior(Ships):
                             return
 
     # Функция для выстрела по доске противника
-    def fire(self, gamer_choice, gamer_board, enemy_board):  # на вход принимает функцию ввода координит,
+    def fire(self, gamer_shoot, gamer_board, enemy_board):  # на вход принимает функцию ввода координит,
         print('Сделайте выстрел по доске противника!')
         print(enemy_board.print_board())
-        self.ship_fire(self.burning_ship, gamer_choice(gamer_board, enemy_board), gamer_board, enemy_board)
+        self.ship_fire(gamer_shoot(gamer_board, enemy_board), gamer_board, enemy_board)
 

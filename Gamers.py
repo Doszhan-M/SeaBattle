@@ -56,7 +56,7 @@ class Gamer(Board):
         print('step_list-', gamer_board.step_list)
         # Вносим координату в блок лист
         gamer_board.block_list = gamer_board.block_list.union(gamer_board.step_list)
-        print('self.block_list',gamer_board.block_list)
+        print('self.block_list', gamer_board.block_list)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
         input_pattern = 'gamer_board.@'
         input_pattern = input_pattern.replace('@', input1[0])
@@ -64,25 +64,40 @@ class Gamer(Board):
         final_value = (input_pattern, number)
         return final_value  # возвращает кортеж типа (self.a, 1)
 
-    def player_shoot(self, enemy_board, gamer_board):
+    # Функция выбора клетки для стрельбы по доске противника. На вход принимает доску противника и свою доску
+    def player_shoot(self, gamer_board, enemy_board):
         input2 = input('Укажите координаты на доске противника: ')
-        if input2 not in gamer_board.shoot_list:
-            gamer_board.shoot_list.add(input2)
-            input_pattern = 'enemy_board.@'
-            input_pattern = input_pattern.replace('@', input2[0])
-            number = int(input2[1])
-            final_value = (input_pattern, number)
-            return final_value  # возвращает кортеж типа (self.a, 1)
+        if input2 in gamer_board.list_all_step:
+            if input2 not in gamer_board.shoot_list:
+                print('input2', input2)
+                return self.shoot_constructor(input2, gamer_board, enemy_board)
+            else:
+                print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
+                return self.player_shoot(enemy_board, gamer_board)
         else:
             print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
             return self.player_shoot(enemy_board, gamer_board)
 
+    # Функция выбора клетки для стрельбы по доске противника. На вход принимает доску противника и свою доску
+    def computer_shoot(self, gamer_board, enemy_board):
+        # Т.к. фунция рандом не перебирает множество делаем из него список
+        list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
+        input2 = random.choice(list_computer_shoot)
+        print('input2', input2)
+        if input2 not in gamer_board.shoot_list:
+            return self.shoot_constructor(input2, gamer_board, enemy_board)
+        else:
+            print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
+            return self.computer_shoot(enemy_board, gamer_board)
 
-
-
-
-
-
-
+    # Функция конструктор для дальнейшей работы с выбранными клетками. На вход принимает переменные с родителей
+    def shoot_constructor(self, input2, gamer_board, enemy_board):
+        gamer_board.shoot_list.add(input2)
+        input_pattern = 'enemy_board.@'
+        input_pattern = input_pattern.replace('@', input2[0])
+        number = int(input2[1])
+        final_value = (input_pattern, number)
+        print('final_value', final_value)
+        return final_value  # возвращает кортеж типа (enemy_board.a, 1)
 
 
