@@ -28,10 +28,10 @@ class Ships(Gamer):
         self.ship_place_fire_ship(ship_class, gamer_choice, gamer_board)
         # Присваиваем координаты первой клетки переменной для вычисления вариантов следующего
         temp_value1 = self.ship_place_fire_ship(ship_class, gamer_choice, gamer_board)
-        self.access_cell_board = set()
+        gamer_board.access_cell_board = set()
         # Формируем доступные клетки
         temp_value_medium = self.constructor_access_cell(temp_value1, ship_class, gamer_board, gamer)
-        self.flag = 0
+        gamer_board.flag = 0
         return temp_value_medium
 
     # Функция для отрисовки кораблей игрока высшего класса. На вход принимает класс корабля, метод ввода координат
@@ -40,7 +40,7 @@ class Ships(Gamer):
         # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
         temp_value2 = self.ship_place_fire_ship(ship_class, gamer_choice, gamer_board)
         temp_value_large = self.constructor_access_cell(temp_value2, ship_class, gamer_board, port)
-        self.flag = 0
+        gamer_board.flag = 0
         return temp_value_large
 
     # Функция для формирования доступных ходов
@@ -65,11 +65,11 @@ class Ships(Gamer):
         # Преобразуем список во множество для логики игры
         access_cell = set(access_cell)
         # Добовляем доступные варианты для ограничения выбора
-        self.access_cell_board = self.access_cell_board.union(access_cell)
+        gamer_board.access_cell_board = gamer_board.access_cell_board.union(access_cell)
         print(f'Для расположения крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
-              f'Доступные варианты:  {self.access_cell_board}')
+              f'Доступные варианты:  {gamer_board.access_cell_board}')
         # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками
-        self.flag = 1
+        gamer_board.flag = 1
         if gamer == 'player':
             temp_value_medium = self.ship_place_fire_ship(ship_class, self.player_choice(gamer_board), gamer_board)
         else:

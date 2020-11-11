@@ -15,7 +15,7 @@ class Gamer(Board):
     # Функция ввода координат для компьютера
     def computer_choice(self, gamer_board):
         # Ставим соответсвующее значение флага, чтобы программа знала чей ход
-        list_computer_step = list(self.list_all_step.difference(self.block_list))
+        list_computer_step = list(gamer_board.list_all_step.difference(gamer_board.step_list))
         input1 = random.choice(list_computer_step)
         final_value = self.choice_constructor(input1, self.computer_choice, gamer_board)
         return final_value  # возвращает кортеж типа (self.a, 1)
@@ -23,17 +23,17 @@ class Gamer(Board):
     # Функция дополнение для обоих choice, на вход принимает итог от player_choice
     def choice_constructor(self, input1, computer_or_player_choice, gamer_board):
         # Проверка есть ли выбор игрока в возможных вариантах
-        if input1 in self.list_all_step:
+        if input1 in gamer_board.list_all_step:
             # Проверка есть ли выбор игрока в блок листе
-            if input1 not in self.block_list:
-                self.one_cell_work_list = self.min_distance()  # вызов фунции расчета мин расстояния
+            if input1 not in gamer_board.step_list:
+                gamer_board.one_cell_work_list = gamer_board.min_distance()  # вызов фунции расчета мин расстояния
                 # Проверка есть ли выбор игрока в листе мин расстоянии
-                if input1 not in self.one_cell_work_list and self.flag == 0:
+                if input1 not in gamer_board.one_cell_work_list and gamer_board.flag == 0:
                     final_value = self.choice_const(input1, gamer_board)
                     return final_value
                 # Проверка есть ли выбор игрока для строение крупных караблей
-                elif self.flag == 1:
-                    if input1 in self.access_cell_board:
+                elif gamer_board.flag == 1:
+                    if input1 in gamer_board.access_cell_board:
                         final_value = self.choice_const(input1, gamer_board)
                         return final_value
                     else:
@@ -53,8 +53,6 @@ class Gamer(Board):
     def choice_const(self, input1, gamer_board):
         # Добавляем выбор игрока в список его ходов
         gamer_board.step_list.add(input1)
-        # Вносим координату в блок лист
-        gamer_board.block_list = gamer_board.block_list.union(gamer_board.step_list)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
         input_pattern = 'gamer_board.@'
         input_pattern = input_pattern.replace('@', input1[0])
@@ -94,5 +92,3 @@ class Gamer(Board):
         number = int(input2[1])
         final_value = (input_pattern, number)
         return final_value  # возвращает кортеж типа (enemy_board.a, 1)
-
-
