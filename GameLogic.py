@@ -5,6 +5,7 @@ from Ship import *
 class GameBehavior(Ships):
     count_ships = 0  # Флаг для подсчета установленных кораблей
     game_cycle = 1
+    fire_count = 0
 
     def arrange_ships(self, gamer_choice, gamer_board, gamer):
         gamer_board.print_board()
@@ -30,25 +31,26 @@ class GameBehavior(Ships):
     def fire(self, gamer_shoot, gamer_board, enemy_board):  # на вход принимает функцию ввода координит и доски игроков
         print('Сделайте выстрел по доске противника!')
         enemy_board.print_board()
-        shoot_result = self.ship_fire(gamer_shoot(gamer_board, enemy_board), gamer_board, enemy_board)
-        game_cycle = self.end_game(gamer_board, enemy_board)
         # Пока выстрел поражает цель соперник продалжает стрельбу
-        while shoot_result == self.burning_ship:
-            shoot_result = self.ship_fire(gamer_shoot(gamer_board, enemy_board), gamer_board, enemy_board)
-            game_cycle = self.end_game(gamer_board, enemy_board)
-        print('game_cycle return)', game_cycle)
-        return game_cycle
-
-    # Функция объявление победы
-    def end_game(self, gamer_board, enemy_board):
+        self.retry_fire(gamer_shoot, gamer_board, enemy_board)
         if enemy_board.step_list.issubset(gamer_board.shoot_list):
             print('Вы победили! ')
             game_cycle = 0
             return game_cycle
         if gamer_board.step_list.issubset(enemy_board.shoot_list):
-            print('Вы проиграли! ')
+            print('Компьютер одержал победу! ')
             game_cycle = 0
             return game_cycle
         else:
             game_cycle = 1
             return game_cycle
+
+    # Функция повтора выстрела если попал
+    def retry_fire(self, gamer_shoot, gamer_board, enemy_board):
+        shoot_result = self.ship_fire(gamer_shoot(gamer_board, enemy_board), gamer_board, enemy_board)
+        if shoot_result == self.burning_ship:
+            self.fire_count += 1
+            if self.fire_count == len(enemy_board.step_list):
+                return
+            else:
+                return self.retry_fire(gamer_shoot, gamer_board, enemy_board)

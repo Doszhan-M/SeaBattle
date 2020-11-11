@@ -65,7 +65,7 @@ class Gamer(Board):
         input2 = input('Укажите координаты на доске противника: ')
         if input2 in gamer_board.list_all_step:
             if input2 not in gamer_board.shoot_list:
-                return self.shoot_constructor(input2, gamer_board, enemy_board)
+                return self.shoot_constructor(input2, gamer_board)
             else:
                 print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
                 return self.player_shoot(enemy_board, gamer_board)
@@ -79,13 +79,13 @@ class Gamer(Board):
         list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
         input2 = random.choice(list_computer_shoot)
         if input2 not in gamer_board.shoot_list:
-            return self.shoot_constructor(input2, gamer_board, enemy_board)
+            return self.shoot_constructor(input2, gamer_board)
         else:
             print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
             return self.computer_shoot(enemy_board, gamer_board)
 
     # Функция конструктор для дальнейшей работы с выбранными клетками. На вход принимает переменные с родителей
-    def shoot_constructor(self, input2, gamer_board, enemy_board):
+    def shoot_constructor(self, input2, gamer_board):
         gamer_board.shoot_list.add(input2)
         input_pattern = 'enemy_board.@'
         input_pattern = input_pattern.replace('@', input2[0])
