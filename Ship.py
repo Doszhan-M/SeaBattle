@@ -79,15 +79,14 @@ class Ships(Gamer):
     # Функция отправки результата по стрельбе по кораблю
     def ship_fire(self, gamer_shoot, gamer_board, enemy_board):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
-        print('gamer_shoot', gamer_shoot)
-        print('gamer_choice',gamer_shoot[0])
         index = enemy_board.board_list.index(eval(gamer_shoot[0]))
-        print('gamer_choice[0][-1] + gamer_choice[-1]', gamer_shoot[0][-1] + str(gamer_shoot[-1]))
         if gamer_shoot[0][-1] + str(gamer_shoot[-1]) in enemy_board.step_list:
             enemy_board.board_list[index][gamer_shoot[1]] = self.burning_ship
+            enemy_board.print_board()
+            return self.burning_ship
         else:
             enemy_board.board_list[index][gamer_shoot[1]] = self.miss_ship
             enemy_board.print_board()
-        # Создаем кортеж для вычиления след клетки для кораблей классом выше или для вычисления результатов выстрела
-        temp_value = (index, gamer_shoot[1])
-        return temp_value  # возвращает кортеж типа (0, 1)
+            # Создаем кортеж для вычиления след клетки для кораблей классом выше или для вычисления результатов выстрела
+            temp_value = (index, gamer_shoot[1]) # возвращает кортеж типа (0, 1)
+            return self.miss_ship

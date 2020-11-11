@@ -53,10 +53,8 @@ class Gamer(Board):
     def choice_const(self, input1, gamer_board):
         # Добавляем выбор игрока в список его ходов
         gamer_board.step_list.add(input1)
-        print('step_list-', gamer_board.step_list)
         # Вносим координату в блок лист
         gamer_board.block_list = gamer_board.block_list.union(gamer_board.step_list)
-        print('self.block_list', gamer_board.block_list)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
         input_pattern = 'gamer_board.@'
         input_pattern = input_pattern.replace('@', input1[0])
@@ -69,7 +67,6 @@ class Gamer(Board):
         input2 = input('Укажите координаты на доске противника: ')
         if input2 in gamer_board.list_all_step:
             if input2 not in gamer_board.shoot_list:
-                print('input2', input2)
                 return self.shoot_constructor(input2, gamer_board, enemy_board)
             else:
                 print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
@@ -83,7 +80,6 @@ class Gamer(Board):
         # Т.к. фунция рандом не перебирает множество делаем из него список
         list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
         input2 = random.choice(list_computer_shoot)
-        print('input2', input2)
         if input2 not in gamer_board.shoot_list:
             return self.shoot_constructor(input2, gamer_board, enemy_board)
         else:
@@ -97,7 +93,6 @@ class Gamer(Board):
         input_pattern = input_pattern.replace('@', input2[0])
         number = int(input2[1])
         final_value = (input_pattern, number)
-        print('final_value', final_value)
         return final_value  # возвращает кортеж типа (enemy_board.a, 1)
 
 
