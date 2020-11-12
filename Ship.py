@@ -1,4 +1,4 @@
-# импорт библтеотек
+# импорт библиотек
 from termcolor import colored
 
 # импорт классов
@@ -67,7 +67,7 @@ class Ships(Gamer):
         # Добовляем доступные варианты для ограничения выбора
         gamer_board.access_cell_board = gamer_board.access_cell_board.union(access_cell)
         if gamer == 'player':
-            print(f'Для расположения крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
+            print(f'Чтобы продолжить установку крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
                   f'Доступные варианты:  {gamer_board.access_cell_board}')
         # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками
         gamer_board.flag = 1
@@ -86,20 +86,28 @@ class Ships(Gamer):
         if gamer_shoot[0][-1] + str(gamer_shoot[-1]) in enemy_board.step_list:
             enemy_board.board_list[index][gamer_shoot[1]] = self.burning_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.burning_ship
-            #if debug == 'debug':
-            #    enemy_board.print_board()
-            #else:
-             #   battle_print_board.print_board()
+            if debug == 'debug':
+                enemy_board.print_board()
+            else:
+                battle_print_board.print_board()
+            if gamer == 'player':
+                print('Поподание! Ваш снаряд поразил цель! Вы можете выстрелить еще раз.')
+                time.sleep(1)
+            if gamer == 'computer':
+                print('Снаряд компьютера попала по вашему кораблю! Компьютер стреляет еще раз...')
+                time.sleep(2)
             return self.burning_ship
         else:
             enemy_board.board_list[index][gamer_shoot[1]] = self.miss_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.miss_ship
-            #if debug == 'debug':
-              #  enemy_board.print_board()
-            #else:
-             #   battle_print_board.print_board()
+            if debug == 'debug':
+                enemy_board.print_board()
+            else:
+                battle_print_board.print_board()
+            time.sleep(0.5)
             if gamer == 'player':
-                print('Вы промахнулись! Ход переходит компьютеру. Компьютер - ')
+                print('Вы промахнулись! Ход переходит компьютеру.')
             if gamer == 'computer':
-                print('Снаряд компьютера пролетел мимо! Ход переходит к вам. Уважаемый игрок - ')
+                time.sleep(1)
+                print('Снаряд компьютера пролетел мимо! Ход переходит к вам.')
             return self.miss_ship

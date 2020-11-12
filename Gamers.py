@@ -1,6 +1,6 @@
 # импорт библиотек
 import random
-
+import time
 # импорт классов
 from Board import *
 
@@ -37,7 +37,7 @@ class Gamer(Board):
                         final_value = self.choice_const(input1, gamer_board)
                         return final_value
                     elif gamer == 'computer':
-                            return computer_or_player_choice(gamer_board, gamer)
+                        return computer_or_player_choice(gamer_board, gamer)
                     else:
                         print('Для расположения крупного корабля, вы должны выбрать только близлежашие клетки!')
                         return computer_or_player_choice(gamer_board, gamer)
@@ -73,22 +73,24 @@ class Gamer(Board):
             except ValueError:
                 print(
                     'raise ValueError: Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
-                return self.player_shoot(enemy_board, gamer_board)
+                return self.player_shoot(gamer_board, enemy_board)
             else:
                 return self.shoot_constructor(input2, gamer_board)
         else:
             print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
-            return self.player_shoot(enemy_board, gamer_board)
+            return self.player_shoot(gamer_board, enemy_board)
 
     # Функция выбора клетки для стрельбы по доске противника. На вход принимает доску противника и свою доску
     def computer_shoot(self, gamer_board, enemy_board):
         # Т.к. фунция рандом не перебирает множество делаем из него список
         list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
         input2 = random.choice(list_computer_shoot)
+        print(f'Компьютер стреляет по квадрату {input2}')
+        time.sleep(2)
         if input2 not in gamer_board.shoot_list:
             return self.shoot_constructor(input2, gamer_board)
         else:
-            return self.computer_shoot(enemy_board, gamer_board)
+            return self.computer_shoot(gamer_board, enemy_board)
 
     # Функция конструктор для дальнейшей работы с выбранными клетками. На вход принимает переменные с родителей
     def shoot_constructor(self, input2, gamer_board):

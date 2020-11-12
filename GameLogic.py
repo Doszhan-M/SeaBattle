@@ -8,29 +8,39 @@ class GameBehavior(Ships):
     fire_count = 0
 
     def arrange_ships(self, gamer_choice, gamer_board, gamer):
+        time.sleep(1)
         gamer_board.print_board()
-        while self.count_ships < 1:
+        while self.count_ships < 5:
+            time.sleep(0.5)
             self.ship_place(self.little_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
             self.count_ships += 1
+            time.sleep(0.5)
             print(f'Корабль №{self.count_ships} легкого класса расположен ')
-            if self.count_ships == 1:
+            if self.count_ships == 4:
                 self.count_ships = 0
-                while self.count_ships < 1:
+                while self.count_ships < 3:
+                    time.sleep(0.5)
                     self.medium_ship_place(self.medium_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
                     self.count_ships += 1
-                    print(f'Корабль №{self.count_ships} среднего класса расположен ', '\n')
-                    if self.count_ships == 10:
+                    time.sleep(0.5)
+                    print(f'Корабль №{self.count_ships} среднего класса расположен ')
+                    if self.count_ships == 2:
                         self.count_ships = 0
                         while self.count_ships < 1:
+                            time.sleep(0.5)
                             self.large_ship_place(self.large_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
                             self.count_ships = 11
-                            print(f'Корабль высшего класса расположен ', '\n', 'Все корабли заняли свои позиции.')
+                            time.sleep(0.5)
+                            print(f'Корабль высшего класса расположен ')
                             return
 
     # Функция для выстрела по доске противника
     def fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board,
              gamer, debug):  # на вход принимает функцию ввода координит и доски игроков
-        print('Сделайте выстрел по доске противника!')
+        if gamer == 'player':
+            print('Сделайте выстрел по доске противника!')
+        if gamer == 'computer':
+            print('Компьютер открывает огонь по вашим кораблям!')
         if debug == 'debug':
             enemy_board.print_board()
         else:
@@ -38,13 +48,17 @@ class GameBehavior(Ships):
         # Пока выстрел поражает цель соперник продалжает стрельбу
         self.retry_fire(gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug)
         if enemy_board.step_list.issubset(gamer_board.shoot_list):
-            print('Поздравляем! Вы победили! ')
+            print('\n', '  Поздравляем! Вы победили!', '\n', '-'*30)
+            time.sleep(1.5)
             enemy_board.print_board()
+            gamer_board.print_board()
             game_cycle = 'stop'
             return game_cycle
         if gamer_board.step_list.issubset(enemy_board.shoot_list):
-            print('Компьютер одержал победу! ')
+            print('\n', '  Компьютер одержал победу! ')
+            time.sleep(1.5)
             gamer_board.print_board()
+            enemy_board.print_board()
             game_cycle = 'stop'
             return game_cycle
         else:
