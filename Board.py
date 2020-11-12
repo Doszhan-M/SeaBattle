@@ -45,8 +45,7 @@ class Board:
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) - 1)))
             for y in self.list2:
                 if i[0] in y:
-                    # При построении листа дистанции может возникнуть исключение в слючае выбора игроком клетки близко
-                    # к краям доски
+                    # При построении листа дистанции может возникнуть исключение в слючае выбора игроком клетки близко к краям доски
                     try:
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[self.list2.index(y) + 1]))
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[abs(self.list2.index(y) - 1)]))

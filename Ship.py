@@ -12,7 +12,7 @@ class Ships(Gamer):
     burning_ship = colored('|X|', 'red')
     miss_ship = colored('|T|', 'cyan')
 
-    # Функция для отрисовки кораблей либо результата выстрела. Принимает класс корабля, функцию ввода  доски игрока
+    # Функция для отрисовки кораблей. Принимает класс корабля, функцию ввода  доски игрока
     def ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
         index = gamer_board.board_list.index(eval(gamer_choice[0]))
@@ -25,7 +25,6 @@ class Ships(Gamer):
         return temp_value  # возвращает кортеж типа (0, 1)
 
     # Функция для отрисовки кораблей игрока среднего класса. На вход принимает класс корабля, метод ввода координат
-    # игроком класса Gamer.
     def medium_ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
         self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
         # Присваиваем координаты первой клетки переменной для вычисления вариантов следующего
@@ -37,7 +36,6 @@ class Ships(Gamer):
         return temp_value_medium
 
     # Функция для отрисовки кораблей игрока высшего класса. На вход принимает класс корабля, метод ввода координат
-    # игроком класса Gamer.
     def large_ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
         # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
         temp_value2 = self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
@@ -68,33 +66,40 @@ class Ships(Gamer):
         access_cell = set(access_cell)
         # Добовляем доступные варианты для ограничения выбора
         gamer_board.access_cell_board = gamer_board.access_cell_board.union(access_cell)
-        print(f'Для расположения крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
-              f'Доступные варианты:  {gamer_board.access_cell_board}')
+        if gamer == 'player':
+            print(f'Для расположения крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
+                  f'Доступные варианты:  {gamer_board.access_cell_board}')
         # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками
         gamer_board.flag = 1
         if gamer == 'player':
-            temp_value_medium = self.ship_place(ship_class, self.player_choice(gamer_board), gamer_board,
-                                                          gamer)
+            temp_value_medium = self.ship_place(ship_class, self.player_choice(gamer_board, gamer), gamer_board,
+                                                gamer)
         else:
-            temp_value_medium = self.ship_place(ship_class, self.computer_choice(gamer_board), gamer_board,
-                                                          gamer)
+            temp_value_medium = self.ship_place(ship_class, self.computer_choice(gamer_board, gamer), gamer_board,
+                                                gamer)
         return temp_value_medium
 
-    # Функция отправки результата стрельбы по кораблю
-    def ship_fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer):
+    # Функция отрисовки корабля после выстрела врага
+    def ship_fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
         index = enemy_board.board_list.index(eval(gamer_shoot[0]))
         if gamer_shoot[0][-1] + str(gamer_shoot[-1]) in enemy_board.step_list:
             enemy_board.board_list[index][gamer_shoot[1]] = self.burning_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.burning_ship
-            battle_print_board.print_board()
+            #if debug == 'debug':
+            #    enemy_board.print_board()
+            #else:
+             #   battle_print_board.print_board()
             return self.burning_ship
         else:
             enemy_board.board_list[index][gamer_shoot[1]] = self.miss_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.miss_ship
-            battle_print_board.print_board()
+            #if debug == 'debug':
+              #  enemy_board.print_board()
+            #else:
+             #   battle_print_board.print_board()
             if gamer == 'player':
                 print('Вы промахнулись! Ход переходит компьютеру. Компьютер - ')
             if gamer == 'computer':
-                print('Снаряд компьютера попал мимо! Ход переходит вам. Уважаемый игрок - ')
+                print('Снаряд компьютера пролетел мимо! Ход переходит к вам. Уважаемый игрок - ')
             return self.miss_ship

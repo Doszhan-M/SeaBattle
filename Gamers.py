@@ -7,21 +7,21 @@ from Board import *
 
 class Gamer(Board):
     # Функция ввода координат для игрока для расстановки кораблей
-    def player_choice(self, gamer_board):
-        input1 = input('Укажите координаты клетки для расположения корабля: ')
-        final_value1 = self.choice_constructor(input1, self.player_choice, gamer_board)
+    def player_choice(self, gamer_board, gamer):
+        input1 = input('Укажите координаты для расположения корабля: ')
+        final_value1 = self.choice_constructor(input1, self.player_choice, gamer_board, gamer)
         return final_value1  # возвращает кортеж типа (self.a, 1)
 
     # Функция ввода координат для компьютера
-    def computer_choice(self, gamer_board):
+    def computer_choice(self, gamer_board, gamer):
         # Ставим соответсвующее значение флага, чтобы программа знала чей ход
         list_computer_step = list(gamer_board.list_all_step.difference(gamer_board.step_list))
         input1 = random.choice(list_computer_step)
-        final_value = self.choice_constructor(input1, self.computer_choice, gamer_board)
+        final_value = self.choice_constructor(input1, self.computer_choice, gamer_board, gamer)
         return final_value  # возвращает кортеж типа (self.a, 1)
 
     # Функция дополнение для обоих choice, на вход принимает итог от player_choice
-    def choice_constructor(self, input1, computer_or_player_choice, gamer_board):
+    def choice_constructor(self, input1, computer_or_player_choice, gamer_board, gamer):
         # Проверка есть ли выбор игрока в возможных вариантах
         if input1 in gamer_board.list_all_step:
             # Проверка есть ли выбор игрока в блок листе
@@ -36,18 +36,21 @@ class Gamer(Board):
                     if input1 in gamer_board.access_cell_board:
                         final_value = self.choice_const(input1, gamer_board)
                         return final_value
+                    elif gamer == 'computer':
+                            return computer_or_player_choice(gamer_board, gamer)
                     else:
                         print('Для расположения крупного корабля, вы должны выбрать только близлежашие клетки!')
-                        return computer_or_player_choice(gamer_board)
+                        return computer_or_player_choice(gamer_board, gamer)
                 else:
-                    print('Расстояние между кораблями должно быть как минимум одна клетка')
-                    return computer_or_player_choice(gamer_board)
+                    if gamer == 'player':
+                        print('Расстояние между кораблями должно быть как минимум одна клетка')
+                    return computer_or_player_choice(gamer_board, gamer)
             else:
                 print('Вы не можете выбрать уже занятые квадраты! Выберите другую')
-                return computer_or_player_choice(gamer_board)
+                return computer_or_player_choice(gamer_board, gamer)
         else:
             print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
-            return computer_or_player_choice(gamer_board)
+            return computer_or_player_choice(gamer_board, gamer)
 
     # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
     def choice_const(self, input1, gamer_board):
@@ -64,11 +67,15 @@ class Gamer(Board):
     def player_shoot(self, gamer_board, enemy_board):
         input2 = input('Укажите координаты на доске противника: ')
         if input2 in gamer_board.list_all_step:
-            if input2 not in gamer_board.shoot_list:
-                return self.shoot_constructor(input2, gamer_board)
-            else:
-                print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
+            try:
+                if input2 in gamer_board.shoot_list:
+                    raise ValueError
+            except ValueError:
+                print(
+                    'raise ValueError: Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
                 return self.player_shoot(enemy_board, gamer_board)
+            else:
+                return self.shoot_constructor(input2, gamer_board)
         else:
             print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
             return self.player_shoot(enemy_board, gamer_board)
@@ -81,7 +88,6 @@ class Gamer(Board):
         if input2 not in gamer_board.shoot_list:
             return self.shoot_constructor(input2, gamer_board)
         else:
-            print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
             return self.computer_shoot(enemy_board, gamer_board)
 
     # Функция конструктор для дальнейшей работы с выбранными клетками. На вход принимает переменные с родителей
