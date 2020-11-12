@@ -37,7 +37,7 @@ class Gamer(Board):
                         final_value = self.choice_const(input1, gamer_board)
                         return final_value
                     else:
-                        print('Для расположения крупного корабля, вы должны выбрать только близлежашие клетки Gamer!')
+                        print('Для расположения крупного корабля, вы должны выбрать только близлежашие клетки!')
                         return computer_or_player_choice(gamer_board)
                 else:
                     print('Расстояние между кораблями должно быть как минимум одна клетка')
@@ -46,7 +46,7 @@ class Gamer(Board):
                 print('Вы не можете выбрать уже занятые квадраты! Выберите другую')
                 return computer_or_player_choice(gamer_board)
         else:
-            print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
+            print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
             return computer_or_player_choice(gamer_board)
 
     # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
@@ -67,10 +67,10 @@ class Gamer(Board):
             if input2 not in gamer_board.shoot_list:
                 return self.shoot_constructor(input2, gamer_board)
             else:
-                print('Введите клетку из доступных на игровой доске! Например, a1 или c3')
+                print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
                 return self.player_shoot(enemy_board, gamer_board)
         else:
-            print('Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
+            print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
             return self.player_shoot(enemy_board, gamer_board)
 
     # Функция выбора клетки для стрельбы по доске противника. На вход принимает доску противника и свою доску
