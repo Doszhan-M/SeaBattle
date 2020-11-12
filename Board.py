@@ -40,14 +40,16 @@ class Board:
 
     # Функция для определения минимальной дистанции между кораблями на игровой доске
     def min_distance(self):
-        for i in self.step_list:  # a1
+        for i in self.step_list:  #
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) + 1)))
             self.one_cell_work_list.add(i.replace(i[1], str(int(i[1]) - 1)))
             for y in self.list2:
                 if i[0] in y:
+                    # При построении листа дистанции может возникнуть исключение, если выбрать клетку близко к краям
                     try:
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[self.list2.index(y) + 1]))
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[abs(self.list2.index(y) - 1)]))
+                    # После отлова исключение можно изменить код на более безопасный
                     except IndexError:
                         self.one_cell_work_list.add(i.replace(i[0], self.list2[abs(self.list2.index(y) - 1)]))
         return self.one_cell_work_list
