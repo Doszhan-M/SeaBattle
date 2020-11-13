@@ -8,31 +8,30 @@ class GameBehavior(Ships):
     fire_count = 0
 
     def arrange_ships(self, gamer_choice, gamer_board, gamer):
-        time.sleep(1)
+        time.sleep(0.5)
         gamer_board.print_board()
-        while self.count_ships < 5:
-            time.sleep(0.5)
-            self.ship_place(self.little_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
-            self.count_ships += 1
-            time.sleep(0.5)
-            print(f'Корабль №{self.count_ships} легкого класса расположен ')
-            if self.count_ships == 4:
-                self.count_ships = 0
-                while self.count_ships < 3:
-                    time.sleep(0.5)
-                    self.medium_ship_place(self.medium_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
-                    self.count_ships += 1
-                    time.sleep(0.5)
-                    print(f'Корабль №{self.count_ships} среднего класса расположен ')
-                    if self.count_ships == 2:
-                        self.count_ships = 0
-                        while self.count_ships < 1:
-                            time.sleep(0.5)
-                            self.large_ship_place(self.large_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
-                            self.count_ships = 11
-                            time.sleep(0.5)
-                            print(f'Корабль высшего класса расположен ')
-                            return
+        time.sleep(0.5)
+        #self.large_ship_place(self.large_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
+        self.count_ships += 1
+        time.sleep(0.5)
+        print(colored('Корабль высшего класса расположен! ', 'green'))
+        if self.count_ships == 1:
+            self.count_ships = 0
+            while self.count_ships < 2:
+                time.sleep(0.5)
+                self.medium_ship_place(self.medium_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
+                self.count_ships += 1
+                time.sleep(0.5)
+                print(colored(f'Корабль №{self.count_ships} среднего класса расположен ', 'green'))
+                if self.count_ships == 2:
+                    self.count_ships = 0
+                    while self.count_ships < 4:
+                        time.sleep(0.5)
+                        self.ship_place(self.little_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
+                        self.count_ships += 1
+                        time.sleep(0.5)
+                        print(colored(f'Корабль №{self.count_ships} легкого класса расположен ', 'green'))
+        return
 
     # Функция для выстрела по доске противника
     def fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board,
