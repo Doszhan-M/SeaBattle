@@ -7,8 +7,8 @@ from Gamers import *
 
 class Ships(Gamer):
     little_ship = colored('|#|', 'green')
-    medium_ship = colored('|#|', 'magenta')
-    large_ship = colored('|#|', 'blue')
+    medium_ship = colored('|#|', 'blue')
+    large_ship = colored('|#|', 'magenta')
     burning_ship = colored('|X|', 'red')
     miss_ship = colored('|T|', 'cyan')
 
@@ -18,66 +18,95 @@ class Ships(Gamer):
         index = gamer_board.board_list.index(eval(gamer_choice[0]))
         gamer_board.board_list[index][gamer_choice[1]] = ship_class
         # Создаем кортеж для вычиления след клетки для кораблей классом выше или для вычисления результатов выстрела
-        temp_value = (index, gamer_choice[1])
+        little_ship_place = (index, gamer_choice[1])
         # Если это ход игрока выводим доску на печать
         if gamer == 'player':
             gamer_board.print_board()
-        return temp_value  # возвращает кортеж типа (0, 1)
+        return little_ship_place  # возвращает кортеж типа (0, 1)
 
     # Функция для отрисовки кораблей игрока среднего класса. На вход принимает класс корабля, метод ввода координат
     def medium_ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
-        self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
         # Присваиваем координаты первой клетки переменной для вычисления вариантов следующего
-        temp_value1 = self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
+        little_ship_place = self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
         gamer_board.access_cell_board = set()
         # Формируем доступные клетки
-        temp_value_medium = self.constructor_access_cell(temp_value1, ship_class, gamer_board, gamer)
-        gamer_board.flag = 0
-        return temp_value_medium
+        access_cell = self.constructor_medium_ship_access_cell(little_ship_place)
+        # Передаем доступные клетки для применения в отрисовке корабля
+        medium_ship_place = self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
+        return (little_ship_place, medium_ship_place)  # возвращает место обеих влеток
 
     # Функция для отрисовки кораблей игрока высшего класса. На вход принимает класс корабля, метод ввода координат
     def large_ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
         # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
-        temp_value2 = self.ship_place(ship_class, gamer_choice, gamer_board, gamer)
-        temp_value_large = self.constructor_access_cell(temp_value2, ship_class, gamer_board, gamer)
-        gamer_board.flag = 0
-        return temp_value_large
+        medium_ship_place = self.medium_ship_place(ship_class, gamer_choice, gamer_board, gamer)
+        # У высшего класса свой конструктор для access list
+        access_cell = self.constructor_large_ship_access_cell(medium_ship_place, gamer_board)
+        # Передаем доступные клетки для применения в отрисовке корабля
+        large_ship_place = self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
+        return
 
-    # Функция для формирования доступных ходов
-    def constructor_access_cell(self, temp_value1, ship_class, gamer_board, gamer):
+        # Функция для формирования доступных ходов среднего корабля
+
+    def constructor_medium_ship_access_cell(self, temp_value_little):
         try:  # В списке может возникнуть исключение, если игрок выбрал клетку на краю доски
             # Создаем список с соседними клетками
-            access_cell = [self.list2[temp_value1[0] + 1] + str(temp_value1[1]),
-                           self.list2[abs(temp_value1[0] - 1)] + str(temp_value1[1]),
-                           self.list2[temp_value1[0]] + str(temp_value1[1] + 1),
-                           self.list2[temp_value1[0]] + str(abs(temp_value1[1] - 1))]
+            access_cell = [self.list2[temp_value_little[0] + 1] + str(temp_value_little[1]),
+                           self.list2[abs(temp_value_little[0] - 1)] + str(temp_value_little[1]),
+                           self.list2[temp_value_little[0]] + str(temp_value_little[1] + 1),
+                           self.list2[temp_value_little[0]] + str(abs(temp_value_little[1] - 1))]
         except (TypeError, IndexError):  # После отвола исключения можно изменить список на более безопасный вариант
-            access_cell = [self.list2[abs(temp_value1[0] - 1)] + str(temp_value1[1]),
-                           self.list2[temp_value1[0]] + str(temp_value1[1] + 1),
-                           self.list2[temp_value1[0]] + str(abs(temp_value1[1] - 1))]
-        # убираем из списка ненужные клетки
-        for i in access_cell:
-            if '0' in i:
-                access_cell.remove(i)
-        for i in access_cell:
-            if '7' in i:
-                access_cell.remove(i)
+            access_cell = [self.list2[abs(temp_value_little[0] - 1)] + str(temp_value_little[1]),
+                           self.list2[temp_value_little[0]] + str(temp_value_little[1] + 1),
+                           self.list2[temp_value_little[0]] + str(abs(temp_value_little[1] - 1))]
+        return access_cell
+
+    # Функция для формирования доступных ходов высшего корабля
+    def constructor_large_ship_access_cell(self, medium_ship_place, gamer_board):
+        # даем короткое название для удобной работы
+        a = medium_ship_place
+        access_cell = []
+        if a[0][0] == a[1][0]:
+            a1 = self.list2[a[0][0]]
+            access_cell = [a1 + str(a[0][1] + 1), a1 + str(a[0][1] - 1), a1 + str(a[1][1] + 1),
+                           a1 + str(a[1][1] - 1)]
+        elif a[0][1] == a[1][1]:
+            a2 = str(a[0][1])
+            if min(a[0][0] - 1, a[1][0] - 1) < 0:
+                access_cell = [self.list2[a[0][0] + 1] + a2, self.list2[a[1][0] + 1] + a2]
+            else:
+                try:
+                    access_cell = [self.list2[a[0][0] + 1] + a2, self.list2[a[0][0] - 1] + a2,
+                                   self.list2[a[1][0] + 1] + a2,
+                                   self.list2[a[1][0] - 1] + a2]
+                except IndexError:
+                    access_cell = [self.list2[a[0][0] - 1] + a2, self.list2[a[1][0] - 1] + a2]
+        return access_cell
+
+    # Функция примает на вход резельтаты конструкторов access cell
+    def constructor_big_ship_place(self, access_cell, ship_class, gamer_board, gamer):
         # Преобразуем список во множество для логики игры
         access_cell = set(access_cell)
+        # Отсекаем невозможные варианты сравнивая с возможными
+        access_cell = access_cell.intersection(self.list_all_step)
+        # Отсекаем из листа уже выбранные клетки
+        access_cell = access_cell.difference(gamer_board.step_list)
         # Добовляем доступные варианты для ограничения выбора
         gamer_board.access_cell_board = gamer_board.access_cell_board.union(access_cell)
+        # Вывод делаем только для игрока
         if gamer == 'player':
-            print(f'Чтобы продолжить установку крупного корабля, вы должны выбрать только близлежашие клетки' '\n'
-                  f'Доступные варианты:  {gamer_board.access_cell_board}')
-        # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками
+            print(f'Чтобы продолжить установку крупного корабля, вы должны выбрать только близлежашие клетки.')
+            print('Доступные варианты:', colored(gamer_board.access_cell_board, 'red'))
+        # Поднимаем флаг, чтобы убрать ограничение минимального расстояния между клетками и наносим корабль
         gamer_board.flag = 1
         if gamer == 'player':
-            temp_value_medium = self.ship_place(ship_class, self.player_choice(gamer_board, gamer), gamer_board,
-                                                gamer)
+            big_ship_place = self.ship_place(ship_class, self.player_choice(gamer_board, gamer), gamer_board,
+                                             gamer)
         else:
-            temp_value_medium = self.ship_place(ship_class, self.computer_choice(gamer_board, gamer), gamer_board,
-                                                gamer)
-        return temp_value_medium
+            big_ship_place = self.ship_place(ship_class, self.computer_choice(gamer_board, gamer), gamer_board,
+                                             gamer)
+        gamer_board.flag = 0
+        gamer_board.access_cell_board = set()
+        return big_ship_place
 
     # Функция отрисовки корабля после выстрела врага
     def ship_fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug):
