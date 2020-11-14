@@ -1,10 +1,14 @@
-# импорт классов
+# импорт библиотек
+from termcolor import colored
 
 
 class Board:
-
     # Игровая доска
-    def __init__(self):
+    def __init__(self, gamer):
+        if gamer == 'player':
+            self.z = [colored('        Ваша игровая доска ', 'blue')]
+        elif gamer == 'computer':
+            self.z = [colored('     Игровая доска компьютера ', 'blue')]
         self.w = ['    ', ' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ']
         self.a = [' a ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
         self.b = [' b ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
@@ -35,7 +39,8 @@ class Board:
 
     # Функция печати доски
     def print_board(self):
-        print(*self.w, '\n', *self.a, '\n', *self.b, '\n', *self.c, '\n', *self.d, '\n', *self.e, '\n', *self.f, '\n',
+        print(*self.z, '\n', *self.w, '\n', *self.a, '\n', *self.b, '\n', *self.c, '\n', *self.d, '\n', *self.e, '\n',
+              *self.f, '\n',
               '_' * 30)
 
     # Функция для определения минимальной дистанции между кораблями на игровой доске

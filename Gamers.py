@@ -72,7 +72,7 @@ class Gamer(Board):
                     raise ValueError
             except ValueError:
                 print(
-                    'raise ValueError: Ранее вы уже открывали огонь по этой точке, следует выбрать другие координаты!')
+                    'raise ValueError: Ранее вы открывали огонь по этой точке, следует выбрать другие координаты!')
                 return self.player_shoot(gamer_board, enemy_board)
             else:
                 return self.shoot_constructor(input2, gamer_board)
@@ -85,8 +85,8 @@ class Gamer(Board):
         # Т.к. фунция рандом не перебирает множество делаем из него список
         list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
         input2 = random.choice(list_computer_shoot)
-        print(f'Компьютер стреляет по квадрату {input2}')
-        time.sleep(2)
+        print('Компьютер стреляет по квадрату', colored(input2, 'red'))
+        time.sleep(1.5)
         if input2 not in gamer_board.shoot_list:
             return self.shoot_constructor(input2, gamer_board)
         else:
