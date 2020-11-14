@@ -1,6 +1,3 @@
-# импорт библиотек
-from termcolor import colored
-
 # импорт классов
 from Gamers import *
 
@@ -33,16 +30,16 @@ class Ships(Gamer):
         access_cell = self.constructor_medium_ship_access_cell(little_ship_place)
         # Передаем доступные клетки для применения в отрисовке корабля
         medium_ship_place = self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
-        return (little_ship_place, medium_ship_place)  # возвращает место обеих влеток
+        return little_ship_place, medium_ship_place  # возвращает место обеих влеток
 
     # Функция для отрисовки кораблей игрока высшего класса. На вход принимает класс корабля, метод ввода координат
     def large_ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
         # Первые две клетки выбираются по приципу корабля среднего класса.Функция вернет значение последнего ввода
         medium_ship_place = self.medium_ship_place(ship_class, gamer_choice, gamer_board, gamer)
         # У высшего класса свой конструктор для access list
-        access_cell = self.constructor_large_ship_access_cell(medium_ship_place, gamer_board)
+        access_cell = self.constructor_large_ship_access_cell(medium_ship_place)
         # Передаем доступные клетки для применения в отрисовке корабля
-        large_ship_place = self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
+        self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
         return
 
         # Функция для формирования доступных ходов среднего корабля
@@ -61,7 +58,7 @@ class Ships(Gamer):
         return access_cell
 
     # Функция для формирования доступных ходов высшего корабля
-    def constructor_large_ship_access_cell(self, medium_ship_place, gamer_board):
+    def constructor_large_ship_access_cell(self, medium_ship_place):
         # даем короткое название для удобной работы
         a = medium_ship_place
         access_cell = []
@@ -109,34 +106,39 @@ class Ships(Gamer):
         return big_ship_place
 
     # Функция отрисовки корабля после выстрела врага
-    def ship_fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug):
+    def ship_fire(self, gamer_shoot, enemy_board, battle_print_board, gamer, debug):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
         index = enemy_board.board_list.index(eval(gamer_shoot[0]))
         if gamer_shoot[0][-1] + str(gamer_shoot[-1]) in enemy_board.step_list:
             enemy_board.board_list[index][gamer_shoot[1]] = self.burning_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.burning_ship
-            if debug == 'debug':
-                enemy_board.print_board()
-            else:
-                battle_print_board.print_board()
             if gamer == 'player':
-                print('Поподание! Ваш снаряд поразил цель! Вы можете выстрелить еще раз.')
+                if debug == 'debug':
+                    enemy_board.print_board()
+                else:
+                    battle_print_board.print_board()
+                time.sleep(0.5)
+                print(colored('Поподание! Ваш снаряд поразил цель!', 'red'), 'Вы можете выстрелить еще раз.')
+                time.sleep(0.5)
+            elif gamer == 'computer':
+                enemy_board.print_board()
+                time.sleep(1.5)
+                print(colored('Снаряд компьютера попала по вашему кораблю! Компьютер стреляет еще раз...', 'red'))
                 time.sleep(1)
-            if gamer == 'computer':
-                print('Снаряд компьютера попала по вашему кораблю! Компьютер стреляет еще раз...')
-                time.sleep(2)
             return self.burning_ship
         else:
             enemy_board.board_list[index][gamer_shoot[1]] = self.miss_ship
             battle_print_board.board_list[index][gamer_shoot[1]] = self.miss_ship
-            if debug == 'debug':
-                enemy_board.print_board()
-            else:
-                battle_print_board.print_board()
-            time.sleep(0.5)
             if gamer == 'player':
-                print('Вы промахнулись! Ход переходит компьютеру.')
-            if gamer == 'computer':
+                if debug == 'debug':
+                    enemy_board.print_board()
+                else:
+                    battle_print_board.print_board()
+                time.sleep(1.5)
+                print(colored('Вы промахнулись! Ход переходит компьютеру.', 'blue'))
+            elif gamer == 'computer':
+                enemy_board.print_board()
+                time.sleep(1.5)
+                print(colored('Снаряд компьютера пролетел мимо! Ход переходит к вам.', 'green'))
                 time.sleep(1)
-                print('Снаряд компьютера пролетел мимо! Ход переходит к вам.')
             return self.miss_ship

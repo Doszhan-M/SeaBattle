@@ -8,10 +8,9 @@ class GameBehavior(Ships):
     fire_count = 0
 
     def arrange_ships(self, gamer_choice, gamer_board, gamer):
-        time.sleep(0.5)
         gamer_board.print_board()
         time.sleep(0.5)
-        #self.large_ship_place(self.large_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
+        self.large_ship_place(self.large_ship, gamer_choice(gamer_board, gamer), gamer_board, gamer)
         self.count_ships += 1
         time.sleep(0.5)
         print(colored('Корабль высшего класса расположен! ', 'green'))
@@ -38,26 +37,23 @@ class GameBehavior(Ships):
              gamer, debug):  # на вход принимает функцию ввода координит и доски игроков
         if gamer == 'player':
             print('Сделайте выстрел по доске противника!')
+            if debug == 'debug':
+                enemy_board.print_board()
+            else:
+                battle_print_board.print_board()
         if gamer == 'computer':
             print('Компьютер открывает огонь по вашим кораблям!')
-        if debug == 'debug':
             enemy_board.print_board()
-        else:
-            battle_print_board.print_board()
         # Пока выстрел поражает цель соперник продалжает стрельбу
         self.retry_fire(gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug)
         if enemy_board.step_list.issubset(gamer_board.shoot_list):
-            print('\n', '  Поздравляем! Вы победили!', '\n', '-'*30)
+            if gamer == 'player':
+                print('\n', colored('  Поздравляем! Вы победили!', 'magenta'), '\n', '-' * 30)
+            elif gamer == 'computer':
+                print('\n', colored('  Компьютер одержал победу! ', 'magenta'))
             time.sleep(1.5)
             enemy_board.print_board()
             gamer_board.print_board()
-            game_cycle = 'stop'
-            return game_cycle
-        if gamer_board.step_list.issubset(enemy_board.shoot_list):
-            print('\n', '  Компьютер одержал победу! ')
-            time.sleep(1.5)
-            gamer_board.print_board()
-            enemy_board.print_board()
             game_cycle = 'stop'
             return game_cycle
         else:
@@ -66,8 +62,9 @@ class GameBehavior(Ships):
 
     # Функция повтора выстрела если попал
     def retry_fire(self, gamer_shoot, gamer_board, enemy_board, battle_print_board, gamer, debug):
-        shoot_result = self.ship_fire(gamer_shoot(gamer_board, enemy_board), gamer_board, enemy_board,
+        shoot_result = self.ship_fire(gamer_shoot(gamer_board, enemy_board), enemy_board,
                                       battle_print_board, gamer, debug)
+        # Если попала в цель, проверяем нет ли выигрыша, если нет то рекурсия
         if shoot_result == self.burning_ship:
             self.fire_count += 1
             if self.fire_count == len(enemy_board.step_list):
