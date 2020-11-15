@@ -1,6 +1,7 @@
 # импорт библиотек
 import random
 import time
+
 # импорт классов
 from Board import *
 
@@ -53,7 +54,8 @@ class Gamer(Board):
             return computer_or_player_choice(gamer_board, gamer)
 
     # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
-    def choice_const(self, input1, gamer_board):
+    @staticmethod
+    def choice_const(input1, gamer_board):
         # Добавляем выбор игрока в список его ходов
         gamer_board.step_list.add(input1)
         # обрабытываем введенные данные в кортеж, каждый символ отдельно
@@ -93,7 +95,8 @@ class Gamer(Board):
             return self.computer_shoot(gamer_board, enemy_board)
 
     # Функция конструктор для дальнейшей работы с выбранными клетками. На вход принимает переменные с родителей
-    def shoot_constructor(self, input2, gamer_board):
+    @staticmethod
+    def shoot_constructor(input2, gamer_board):
         gamer_board.shoot_list.add(input2)
         input_pattern = 'enemy_board.@'
         input_pattern = input_pattern.replace('@', input2[0])

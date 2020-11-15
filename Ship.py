@@ -10,7 +10,8 @@ class Ships(Gamer):
     miss_ship = colored('|T|', 'cyan')
 
     # Функция для отрисовки кораблей. Принимает класс корабля, функцию ввода  доски игрока
-    def ship_place(self, ship_class, gamer_choice, gamer_board, gamer):
+    @staticmethod
+    def ship_place(ship_class, gamer_choice, gamer_board, gamer):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
         index = gamer_board.board_list.index(eval(gamer_choice[0]))
         gamer_board.board_list[index][gamer_choice[1]] = ship_class
