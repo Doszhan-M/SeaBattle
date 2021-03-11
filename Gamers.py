@@ -1,8 +1,6 @@
-# импорт библиотек
 import random
 import time
 
-# импорт классов
 from Board import *
 
 
@@ -53,12 +51,12 @@ class Gamer(Board):
             print('Введите клетку из доступных на игровой доске! Например, f1 или d3')
             return computer_or_player_choice(gamer_board, gamer)
 
-    # Функция сервис для choice_constructor, на вход принимает ввод игрока ввиде строки
+    # Функция сервис для choice_constructor, на вход принимает ввод игрока в виде строки
     @staticmethod
     def choice_const(input1, gamer_board):
         # Добавляем выбор игрока в список его ходов
         gamer_board.step_list.add(input1)
-        # обрабытываем введенные данные в кортеж, каждый символ отдельно
+        # обрабатываем введенные данные в кортеж, каждый символ отдельно
         input_pattern = 'gamer_board.@'
         input_pattern = input_pattern.replace('@', input1[0])
         number = int(input1[1])
@@ -84,7 +82,7 @@ class Gamer(Board):
 
     # Функция выбора клетки для стрельбы по доске противника. На вход принимает доску противника и свою доску
     def computer_shoot(self, gamer_board, enemy_board):
-        # Т.к. фунция рандом не перебирает множество делаем из него список
+        # Т.к. функция рандом не перебирает множество делаем из него список
         list_computer_shoot = list(gamer_board.list_all_step.difference(gamer_board.shoot_list))
         input2 = random.choice(list_computer_shoot)
         print('Компьютер стреляет по квадрату', colored(input2, 'red'))

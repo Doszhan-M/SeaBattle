@@ -1,4 +1,3 @@
-# импорт классов
 from Gamers import *
 
 
@@ -15,7 +14,7 @@ class Ships(Gamer):
         # При помощи функции eval преобразуем ввод игрока в индексы на игровой доске
         index = gamer_board.board_list.index(eval(gamer_choice[0]))
         gamer_board.board_list[index][gamer_choice[1]] = ship_class
-        # Создаем кортеж для вычиления след клетки для кораблей классом выше или для вычисления результатов выстрела
+        # Создаем кортеж для вычисления след клетки для кораблей классом выше или для вычисления результатов выстрела
         little_ship_place = (index, gamer_choice[1])
         # Если это ход игрока выводим доску на печать
         if gamer == 'player':
@@ -43,8 +42,7 @@ class Ships(Gamer):
         self.constructor_big_ship_place(access_cell, ship_class, gamer_board, gamer)
         return
 
-        # Функция для формирования доступных ходов среднего корабля
-
+    # Функция для формирования доступных ходов среднего корабля
     def constructor_medium_ship_access_cell(self, temp_value_little):
         try:  # В списке может возникнуть исключение, если игрок выбрал клетку на краю доски
             # Создаем список с соседними клетками
@@ -52,7 +50,7 @@ class Ships(Gamer):
                            self.list2[abs(temp_value_little[0] - 1)] + str(temp_value_little[1]),
                            self.list2[temp_value_little[0]] + str(temp_value_little[1] + 1),
                            self.list2[temp_value_little[0]] + str(abs(temp_value_little[1] - 1))]
-        except (TypeError, IndexError):  # После отвола исключения можно изменить список на более безопасный вариант
+        except (TypeError, IndexError):  # После отлова исключения можно изменить список на более безопасный вариант
             access_cell = [self.list2[abs(temp_value_little[0] - 1)] + str(temp_value_little[1]),
                            self.list2[temp_value_little[0]] + str(temp_value_little[1] + 1),
                            self.list2[temp_value_little[0]] + str(abs(temp_value_little[1] - 1))]
@@ -80,7 +78,7 @@ class Ships(Gamer):
                     access_cell = [self.list2[a[0][0] - 1] + a2, self.list2[a[1][0] - 1] + a2]
         return access_cell
 
-    # Функция примает на вход резельтаты конструкторов access cell
+    # Функция принимает на вход результаты конструкторов access cell
     def constructor_big_ship_place(self, access_cell, ship_class, gamer_board, gamer):
         # Преобразуем список во множество для логики игры
         access_cell = set(access_cell)
@@ -88,7 +86,7 @@ class Ships(Gamer):
         access_cell = access_cell.intersection(self.list_all_step)
         # Отсекаем из листа уже выбранные клетки
         access_cell = access_cell.difference(gamer_board.step_list)
-        # Добовляем доступные варианты для ограничения выбора
+        # Добавляем доступные варианты для ограничения выбора
         gamer_board.access_cell_board = gamer_board.access_cell_board.union(access_cell)
         # Вывод делаем только для игрока
         if gamer == 'player':
@@ -119,7 +117,7 @@ class Ships(Gamer):
                 else:
                     battle_print_board.print_board()
                 time.sleep(0.5)
-                print(colored('Поподание! Ваш снаряд поразил цель!', 'red'), 'Вы можете выстрелить еще раз.')
+                print(colored('Попадание! Ваш снаряд поразил цель!', 'red'), 'Вы можете выстрелить еще раз.')
                 time.sleep(0.5)
             elif gamer == 'computer':
                 enemy_board.print_board()

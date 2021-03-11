@@ -1,4 +1,3 @@
-# импорт классов
 from Ship import *
 
 
@@ -7,6 +6,7 @@ class GameBehavior(Ships):
     game_cycle = 'continue'
     fire_count = 0
 
+    # Расстановка кораблей
     def arrange_ships(self, gamer_choice, gamer_board, gamer):
         gamer_board.print_board()
         time.sleep(0.5)

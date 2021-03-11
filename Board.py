@@ -1,5 +1,6 @@
-# импорт библиотек
 from termcolor import colored
+import colorama
+colorama.init()
 
 
 class Board:
@@ -18,12 +19,12 @@ class Board:
         self.f = [' f ', '|0|', '|0|', '|0|', '|O|', '|O|', '|0|']
         self.board_list = [self.a, self.b, self.c, self.d, self.e, self.f]
         # Вспомогательные переменные для функции интерактива с игроком
-        self.list_all_step = set()       # Переменная где храняться все ходы
+        self.list_all_step = set()       # Переменная где хранятся все ходы
         self.step_list = set()           # Переменная для сбора сделанных ходов игрока
         self.one_cell_work_list = set()  # Переменная для вычисления минимального расстояния между кораблями
         self.access_cell_board = set()   # Переменная для хранения вариантов хода крупных кораблей
-        self.allow_list = set()          # Переменная где храняться доступные ходы
-        self.flag = 0                    # Флаг для ограничения растояния кораблей
+        self.allow_list = set()          # Переменная где хранятся доступные ходы
+        self.flag = 0                    # Флаг для ограничения расстояния кораблей
         self.shoot_list = set()          # Переменные для выстрела
         # Переменные для конструктора
         self.list2 = ('a', 'b', 'c', 'd', 'e', 'f')
